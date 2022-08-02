@@ -14,6 +14,8 @@ There are endless possibilites!
 ## Open-source
 tRandomizer is open-source and under the MIT license. You can find the source code here: https://github.com/Red050911/tRandomizer
 ## Changelog
+- Update 1.1.1: Hotfix
+	1. Corrected description spelling error (for real this time)
 - Update 1.1.0: New features
 	1. Corrected description spelling error
 	2. Added boss damage randomization
