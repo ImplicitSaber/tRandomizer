@@ -29,6 +29,13 @@ namespace tRandomizer
         public bool randomizeBossHealth;
 
         [Header("Randomization")]
+        [Label("Randomize boss damage")]
+        [Tooltip("Setting this to true will randomize all bosses' damage. If this is set to false, no randomization of boss damage will take place.")]
+        [DefaultValue(true)]
+        [ReloadRequired]
+        public bool randomizeBossDamage;
+
+        [Header("Randomization")]
         [Label("Don't randomize progression required items")]
         [Tooltip("Setting this to true will stop the randomization of items required for progression, e.g. guide voodoo doll, pwnhammer. This will not matter if Randomize monster and boss drops is false.")]
         [DefaultValue(true)]

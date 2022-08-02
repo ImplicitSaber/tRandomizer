@@ -86,21 +86,20 @@ namespace tRandomizer
         public override void SetDefaults(NPC npc)
         {
             base.SetDefaults(npc);
-			if(ModContent.GetInstance<Config>().randomizeBossHealth)
+			if(npc.boss)
             {
-				if(npc.boss)
-                {
-					Random rand = new Random(Guid.NewGuid().GetHashCode());
-					Config cfg = ModContent.GetInstance<Config>();
-					if(cfg.minRandomBossHealth > cfg.maxRandomBossHealth || cfg.minRandomBossDamage > cfg.maxRandomBossDamage)
-                    {
-						return;
-                    }
+				Random rand = new Random(Guid.NewGuid().GetHashCode());
+				Config cfg = ModContent.GetInstance<Config>();
+				if (cfg.randomizeBossHealth && cfg.minRandomBossHealth > cfg.maxRandomBossHealth)
+				{
 					npc.lifeMax = rand.Next(ReadIntMinToRandom(cfg.minRandomBossHealth), ReadIntMaxToRandom(cfg.maxRandomBossHealth));
 					npc.life = npc.lifeMax;
+				}
+				if (cfg.randomizeBossDamage && cfg.minRandomBossDamage > cfg.maxRandomBossDamage)
+				{
 					npc.damage = rand.Next(ReadIntMinToRandom(cfg.minRandomBossDamage), ReadIntMaxToRandom(cfg.maxRandomBossDamage));
 				}
-            }
+			}
         }
 
 		public int ReadIntMaxToRandom(int toRead)
