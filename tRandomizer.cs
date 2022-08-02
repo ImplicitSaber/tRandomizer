@@ -59,14 +59,15 @@ namespace tRandomizer
 				Random rand = new Random(Guid.NewGuid().GetHashCode());
 				for (int i = 0; i < shop.item.Length; i++)
 				{
+					Config cfg = ModContent.GetInstance<Config>();
 					int id = rand.Next(1, 3930);
 					bool useDefMedals = rand.Next(1, 3) > 1;
 					bool lowPrice = rand.Next(1, 3) > 1;
-					int defMedalVal = rand.Next(1, 1000);
-					int platinumVal = rand.Next(0, 51);
-					int goldVal = rand.Next(0, 100);
-					int silverVal = rand.Next(0, 100);
-					int copperVal = rand.Next(1, 100);
+					int defMedalVal = rand.Next(1, ReadIntMaxToRandomWithMax(cfg.maxRandomDefMedals, 999));
+					int platinumVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.maxRandomPlatinum, 999));
+					int goldVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.maxRandomGold, 99));
+					int silverVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.maxRandomSilver, 99));
+					int copperVal = rand.Next(1, ReadIntMaxToRandomWithMax(cfg.maxRandomCopper, 99));
 					shop.item[i].SetDefaults(id);
 					if (useDefMedals)
 					{
@@ -90,12 +91,33 @@ namespace tRandomizer
 				if(npc.boss)
                 {
 					Random rand = new Random(Guid.NewGuid().GetHashCode());
-					npc.lifeMax = rand.Next(1000, 1000001);
+					Config cfg = ModContent.GetInstance<Config>();
+					if(cfg.minRandomBossHealth > cfg.maxRandomBossHealth || cfg.minRandomBossDamage > cfg.maxRandomBossDamage)
+                    {
+						return;
+                    }
+					npc.lifeMax = rand.Next(ReadIntMinToRandom(cfg.minRandomBossHealth), ReadIntMaxToRandom(cfg.maxRandomBossHealth));
 					npc.life = npc.lifeMax;
+					npc.damage = rand.Next(ReadIntMinToRandom(cfg.minRandomBossDamage), ReadIntMaxToRandom(cfg.maxRandomBossDamage));
 				}
             }
         }
 
-    }
+		public int ReadIntMaxToRandom(int toRead)
+        {
+			return toRead > 0 ? toRead + 1 : 2;
+        }
+
+		public int ReadIntMinToRandom(int toRead)
+		{
+			return toRead > 0 ? toRead : 1;
+		}
+
+		public int ReadIntMaxToRandomWithMax(int toRead, int max)
+        {
+			return ReadIntMaxToRandom(toRead > max ? max : toRead);
+        }
+
+	}
 
 }
