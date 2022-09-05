@@ -50,6 +50,7 @@ namespace tRandomizer
         [ReloadRequired]
         public int maxRandomBossHealth;
 
+        [Label("Minimum random boss damage")]
         [Tooltip("The minimum amount of boss damage the randomizer will select.")]
         [DefaultValue(1)]
         [ReloadRequired]

@@ -15,6 +15,8 @@ There are endless possibilites!
 ## Open-source
 tRandomizer is open-source and under the MIT license. You can find the source code here: https://github.com/Red050911/tRandomizer
 ## Changelog
+- Update 1.2.1: Hotfix
+	1. Fixed error in config involving internal names
 - Update 1.2.0: Recipe Randomization
 	1. Added randomization to recipes
 	2. Code cleanup
