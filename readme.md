@@ -6,15 +6,22 @@ tRandomizer is a randomizer mod for Terraria, currently randomizing:
 - Boss damage
 
 There are endless possibilites!
-- Eye of Cthulhu could take a long time to kill with the Zenith
-- Moon Lord could get one-shot
+- Eye of Cthulhu could have billions of HP
+- Moon Lord could get oneshot
 - A slime could drop a Zenith
 - The Merchant could sell Luminite
-- Crafting a torch could give you a Zenith instead
+- Crafting a torch could give you a Zapinator
 - ...and much more!
-## Open-source
-tRandomizer is open-source and under the MIT license. You can find the source code here: https://github.com/Red050911/tRandomizer
+## Open source
+tRandomizer is open source and under the MIT license. You can find the source code here: https://github.com/ImplicitSaber/tRandomizer
 ## Changelog
+- Update 2.0.0: Terraria 1.4.4 support
+	1. Updated to Terraria 1.4.4
+	2. Fixed a bug causing Plantera to drop the Jungle Key rather than the Temple Key
+	3. Removed defender medals from shop randomization due to bugs
+	4. Used a single RNG instance instead of created a new one each randomization call
+	5. Modified shop randomization behavior
+	6. Added an option to respect the max stack of items
 - Update 1.2.1: Hotfix
 	1. Fixed error in config involving internal names
 - Update 1.2.0: Recipe Randomization

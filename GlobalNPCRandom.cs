@@ -10,9 +10,13 @@ namespace tRandomizer
 	public class GlobalNPCRandom : GlobalNPC
 	{
 
+		private static readonly Random rand = new Random(Guid.NewGuid().GetHashCode());
+		
+
 		public override void ModifyNPCLoot(NPC npc, NPCLoot loot)
 		{
-			if (ModContent.GetInstance<Config>().randomizeMobDrops)
+			Config cfg = ModContent.GetInstance<Config>();
+            if (cfg.RandomizeMobDrops)
 			{
 				List<IItemDropRule> rules = loot.Get(true);
 				foreach (IItemDropRule rule in rules)
@@ -20,16 +24,16 @@ namespace tRandomizer
 					if (rule == null) continue;
 					loot.Remove(rule);
 				}
-				Random rand = new Random(Guid.NewGuid().GetHashCode());
 				int amountOfDrops = rand.Next(1, 11);
 				for (int i = 0; i < amountOfDrops; i++)
 				{
 					int id = rand.Next(1, Main.item.Length);
-					int dropAmountMin = rand.Next(1, 1000);
-					int dropAmountMax = rand.Next(dropAmountMin, 1000);
+					int maxStackExclusive = (cfg.RespectMaxStack ? ItemMaxStackGetter.GetItemMaxStack(id) : Item.CommonMaxStack) + 1;
+                    int dropAmountMin = rand.Next(1, maxStackExclusive);
+					int dropAmountMax = rand.Next(dropAmountMin, maxStackExclusive);
 					loot.Add(ItemDropRule.Common(id, 1, dropAmountMin, dropAmountMax));
 				}
-				if (ModContent.GetInstance<Config>().dontRandomizeProgressionReqdItems)
+				if (cfg.DontRandomizeReqdItems)
 				{
 					if (npc.type == NPCID.VoodooDemon)
 					{
@@ -41,59 +45,55 @@ namespace tRandomizer
 					}
 					else if (npc.type == NPCID.Plantera)
 					{
-						loot.Add(ItemDropRule.Common(ItemID.JungleKey, 1, 1, 1));
+						loot.Add(ItemDropRule.Common(ItemID.TempleKey, 1, 1, 1));
 					}
 				}
 			}
 		}
 
-		public override void SetupShop(int type, Chest shop, ref int nextSlot)
+		public override void ModifyShop(NPCShop shop)
 		{
-			base.SetupShop(type, shop, ref nextSlot);
-			if (ModContent.GetInstance<Config>().randomizeNPCShops)
+			base.ModifyShop(shop);
+            Config cfg = ModContent.GetInstance<Config>();
+            if (cfg.RandomizeNPCShops)
 			{
-				Random rand = new Random(Guid.NewGuid().GetHashCode());
-				for (int i = 0; i < shop.item.Length; i++)
+				List<NPCShop.Entry> nEntries = new List<NPCShop.Entry>();
+				foreach(NPCShop.Entry e in shop.Entries)
 				{
-					Config cfg = ModContent.GetInstance<Config>();
-					int id = rand.Next(1, Main.item.Length);
-					bool useDefMedals = rand.Next(1, 3) > 1;
-					bool lowPrice = rand.Next(1, 3) > 1;
-					int defMedalVal = rand.Next(1, ReadIntMaxToRandomWithMax(cfg.maxRandomDefMedals, 999));
-					int platinumVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.maxRandomPlatinum, 999));
-					int goldVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.maxRandomGold, 99));
-					int silverVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.maxRandomSilver, 99));
-					int copperVal = rand.Next(1, ReadIntMaxToRandomWithMax(cfg.maxRandomCopper, 99));
-					shop.item[i].SetDefaults(id);
-					if (useDefMedals)
-					{
-						shop.item[i].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-						shop.item[i].shopCustomPrice = defMedalVal;
-					}
-					else
-					{
-						shop.item[i].shopCustomPrice = Item.buyPrice(lowPrice ? 0 : platinumVal, lowPrice ? 0 : goldVal, silverVal, copperVal);
-					}
-
+					e.Disable();
+                    int id = rand.Next(1, Main.item.Length);
+                    bool lowPrice = rand.Next(1, 3) > 1;
+                    int platinumVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.MaxRandomPlatinum, Item.CommonMaxStack));
+                    int goldVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.MaxRandomGold, 99));
+                    int silverVal = rand.Next(0, ReadIntMaxToRandomWithMax(cfg.MaxRandomSilver, 99));
+                    int copperVal = rand.Next(1, ReadIntMaxToRandomWithMax(cfg.MaxRandomCopper, 99));
+					Condition[] conditions = [..e.Conditions];
+					NPCShop.Entry nE = new NPCShop.Entry(id, conditions);
+					nE.Item.stack = rand.Next(1, (cfg.RespectMaxStack ? nE.Item.maxStack : Item.CommonMaxStack) + 1);
+                    nE.Item.shopCustomPrice = Item.buyPrice(lowPrice ? 0 : platinumVal, lowPrice ? 0 : goldVal, silverVal, copperVal);
+					nEntries.Add(nE);
+				}
+				foreach(NPCShop.Entry e in nEntries)
+				{
+					shop.Add(e);
 				}
 			}
 		}
 
-		public override void SetDefaults(NPC npc)
+        public override void SetDefaults(NPC npc)
 		{
 			base.SetDefaults(npc);
 			if (npc.boss)
 			{
-				Random rand = new Random(Guid.NewGuid().GetHashCode());
 				Config cfg = ModContent.GetInstance<Config>();
-				if (cfg.randomizeBossHealth && cfg.minRandomBossHealth > cfg.maxRandomBossHealth)
+				if (cfg.RandomizeBossHealth && cfg.MinRandomBossHealth > cfg.MaxRandomBossHealth)
 				{
-					npc.lifeMax = rand.Next(ReadIntMinToRandom(cfg.minRandomBossHealth), ReadIntMaxToRandom(cfg.maxRandomBossHealth));
+					npc.lifeMax = rand.Next(ReadIntMinToRandom(cfg.MinRandomBossHealth), ReadIntMaxToRandom(cfg.MaxRandomBossHealth));
 					npc.life = npc.lifeMax;
 				}
-				if (cfg.randomizeBossDamage && cfg.minRandomBossDamage > cfg.maxRandomBossDamage)
+				if (cfg.RandomizeBossDamage && cfg.MinRandomBossDamage > cfg.MaxRandomBossDamage)
 				{
-					npc.damage = rand.Next(ReadIntMinToRandom(cfg.minRandomBossDamage), ReadIntMaxToRandom(cfg.maxRandomBossDamage));
+					npc.damage = rand.Next(ReadIntMinToRandom(cfg.MinRandomBossDamage), ReadIntMaxToRandom(cfg.MaxRandomBossDamage));
 				}
 			}
 		}
