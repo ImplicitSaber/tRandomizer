@@ -17,7 +17,11 @@ tRandomizer is open source and under the MIT license. You can find the source co
 1. Updated to Terraria 1.4.4
 2. Fixed a bug causing Plantera to drop the Jungle Key rather than the Temple Key
 3. Removed defender medals from shop randomization due to bugs
+<<<<<<< HEAD
 4. Used a single RNG instance instead of creating a new one each randomization call
+=======
+4. Used a single RNG instance instead of created a new one each randomization call
+>>>>>>> d39d2e05eddf8465b32d30142431226cf5c48af5
 5. Modified shop randomization behavior
 6. Added an option to respect the max stack of items
 - Update 1.2.1: Hotfix
