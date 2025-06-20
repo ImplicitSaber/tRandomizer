@@ -1,3 +1,3 @@
 displayName = tRandomizer
-author = Red050911
-version = 1.2.1
+author = ImplicitSaber
+version = 2.0.0

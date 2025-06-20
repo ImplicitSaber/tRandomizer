@@ -1,0 +1,79 @@
+Config: {
+	DisplayName: Server Config
+	Headers.Randomization: Randomization Settings
+
+	RandomizeMobDrops: {
+		Label: Randomize NPC/monster/boss drops
+		Tooltip: Setting this to true will randomize all NPC drops. This includes monsters and bosses.
+	}
+
+	RandomizeNPCShops: {
+		Label: Randomize NPC shops
+		Tooltip: Setting this to true will randomize all NPC shops. This will randomize the items and price.
+	}
+
+	RandomizeBossHealth: {
+		Label: Randomize boss HP
+		Tooltip: Setting this to true will randomize all bosses' max health.
+	}
+
+	RandomizeBossDamage: {
+		Label: Randomize boss damage
+		Tooltip: Setting this to true will randomize all bosses' damage.
+	}
+
+	DontRandomizeReqdItems: {
+		Label: Don't randomize required items
+		Tooltip: Setting this to true will stop the randomization of items required for progression, e.g. guide voodoo doll, pwnhammer. This will not matter if drop randomization is off.
+	}
+
+	MinRandomBossHealth: {
+		Label: Minimum random boss health
+		Tooltip: The minimum amount of boss health the randomizer will select.
+	}
+
+	MaxRandomBossHealth: {
+		Label: Maximum random boss damage
+		Tooltip: The maximum amount of boss health the randomizer will select.
+	}
+
+	MinRandomBossDamage: {
+		Label: Minimum random boss damage
+		Tooltip: The minimum amount of boss damage the randomizer will select.
+	}
+
+	MaxRandomBossDamage: {
+		Label: Maximum random boss damage
+		Tooltip: The maximum amount of boss damage the randomizer will select.
+	}
+
+	MaxRandomPlatinum: {
+		Label: Maximum random platinum cost
+		Tooltip: The maximum amount of platinum in a random shop price.
+	}
+
+	MaxRandomGold: {
+		Label: Maximum random gold cost
+		Tooltip: The maximum amount of gold in a random shop price.
+	}
+
+	MaxRandomSilver: {
+		Label: Maximum random silver cost
+		Tooltip: The maximum amount of silver in a random shop price.
+	}
+
+	MaxRandomCopper: {
+		Label: Maximum random copper cost
+		Tooltip: The maximum amount of copper in a random shop price.
+	}
+
+	RandomizeRecipeResults: {
+		Label: Randomize the results of recipes
+		Tooltip: Randomizes the outputs of recipes. Recipes for required items will not be randomized if that setting is enabled.
+	}
+
+	RespectMaxStack: {
+		Label: Respect max stack of items
+		Tooltip: Respect the max stack count of items during randomization.
+	}
+}
